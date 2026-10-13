@@ -1,0 +1,2269 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Studio Jasminny Amorim — Concept Beauty em Braga, Portugal. Especialistas em beleza com elegância e sofisticação." />
+  <title>Studio Jasminny Amorim · Concept Beauty</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─────────────────────────────────────────
+       TOKENS
+    ───────────────────────────────────────── */
+    :root {
+      --char:   #525050;   /* charcoal grey */
+      --char-d: #3d3b3b;   /* darker variant */
+      --gold:   #c9a84c;   /* champagne gold */
+      --gold-l: #e0c47a;   /* light gold */
+      --gold-d: #a6882e;   /* deep gold */
+      --cream:  #f7f3ee;   /* warm cream */
+      --white:  #ffffff;
+      --off:    #f0ebe4;   /* off-white */
+      --text-d: #2b2929;
+
+      --ff-serif: 'Cormorant Garamond', Georgia, serif;
+      --ff-sans:  'Jost', system-ui, sans-serif;
+
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+    }
+
+    /* ─────────────────────────────────────────
+       RESET
+    ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+    body {
+      background: var(--cream);
+      color: var(--text-d);
+      font-family: var(--ff-sans);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    /* ─────────────────────────────────────────
+       SCROLLBAR
+    ───────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--char); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    /* ─────────────────────────────────────────
+       UTILITIES
+    ───────────────────────────────────────── */
+    .container {
+      width: min(90%, 1160px);
+      margin-inline: auto;
+    }
+    .gold { color: var(--gold); }
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-32px);
+      transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(32px);
+      transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* clip reveal animations – prevents horizontal scroll */
+    section, footer, .marquee-strip {
+      overflow-x: clip;
+    }
+
+    /* ─────────────────────────────────────────
+       SECTION LABEL
+    ───────────────────────────────────────── */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--ff-sans);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .section-label::before,
+    .section-label::after {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .section-label::before { display: none; }
+    .section-label.centered {
+      justify-content: center;
+    }
+    .section-label.centered::before { display: block; }
+
+    /* ─────────────────────────────────────────
+       NAV
+    ───────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 900;
+      padding: 0;
+      transition: background 0.4s, backdrop-filter 0.4s, box-shadow 0.4s;
+    }
+    #nav.scrolled {
+      background: rgba(40, 38, 38, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 1px 0 rgba(201, 168, 76, 0.2);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 0;
+    }
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+    }
+    .nav-logo-name {
+      font-family: var(--ff-sans);
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .nav-logo-sub {
+      font-family: var(--ff-serif);
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(201, 168, 76, 0.65);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.67rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.75);
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s var(--ease-out);
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold) !important;
+      border: 1px solid rgba(201, 168, 76, 0.5);
+      padding: 0.55rem 1.4rem;
+      transition: background 0.3s, color 0.3s, border-color 0.3s !important;
+    }
+    .nav-cta:hover {
+      background: var(--gold) !important;
+      color: var(--char-d) !important;
+      border-color: var(--gold) !important;
+    }
+    .nav-cta::after { display: none !important; }
+    .burger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      padding: 4px;
+    }
+    .burger span {
+      display: block;
+      width: 24px; height: 1px;
+      background: var(--gold);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .burger.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 4px); }
+    .burger.open span:nth-child(2) { opacity: 0; }
+    .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -4px); }
+
+    /* mobile nav drawer */
+    .nav-drawer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--char-d);
+      z-index: 800;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+    .nav-drawer.open { opacity: 1; }
+    .nav-drawer a {
+      font-family: var(--ff-serif);
+      font-size: 2.2rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--cream);
+      transition: color 0.3s;
+    }
+    .nav-drawer a:hover { color: var(--gold); }
+
+    /* ─────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────── */
+    #hero {
+      min-height: 100dvh;
+      background: var(--char);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Geometric accent lines */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(201,168,76,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 5% 4rem 0;
+      padding-left: max(5%, calc((100vw - 1160px) / 2));
+      position: relative;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 48px; height: 1px;
+      background: var(--gold);
+    }
+    .hero-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(3.4rem, 6vw, 6.5rem);
+      font-weight: 300;
+      line-height: 0.98;
+      color: var(--white);
+      letter-spacing: -0.01em;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-l);
+    }
+    .hero-subtitle {
+      font-family: var(--ff-sans);
+      font-size: 0.72rem;
+      font-weight: 300;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-top: 1.2rem;
+      margin-bottom: 3.5rem;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--char-d);
+      background: var(--gold);
+      padding: 1rem 2.2rem;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .btn-primary:hover {
+      background: var(--gold-l);
+      transform: translateY(-2px);
+    }
+    .btn-primary svg { flex-shrink: 0; }
+    .btn-ghost {
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: color 0.3s;
+    }
+    .btn-ghost:hover { color: var(--gold); }
+    .btn-ghost svg { transition: transform 0.3s; }
+    .btn-ghost:hover svg { transform: translateX(4px); }
+
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-image-wrap {
+      position: absolute;
+      inset: 0;
+    }
+    .hero-image-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: brightness(0.75) saturate(0.85);
+      transition: transform 8s linear;
+    }
+    #hero:hover .hero-image-wrap img {
+      transform: scale(1.04);
+    }
+    /* Gold vertical line accent */
+    .hero-right::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 15%; bottom: 15%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+      z-index: 3;
+    }
+    /* Overlay gradient on image */
+    .hero-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(82,80,80,0.55) 0%, transparent 40%);
+      z-index: 2;
+    }
+    /* Floating badge */
+    .hero-badge {
+      position: absolute;
+      bottom: 3rem;
+      right: 3rem;
+      z-index: 4;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: rgba(201, 168, 76, 0.15);
+      border: 1px solid rgba(201, 168, 76, 0.4);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      animation: heroSpin 20s linear infinite;
+    }
+    @keyframes heroSpin {
+      to { transform: rotate(360deg); }
+    }
+    .hero-badge-inner {
+      animation: heroSpinReverse 20s linear infinite;
+    }
+    @keyframes heroSpinReverse {
+      to { transform: rotate(-360deg); }
+    }
+    .hero-badge-star {
+      font-size: 0.55rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+    }
+    .hero-badge-number {
+      font-family: var(--ff-serif);
+      font-size: 1.8rem;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .hero-badge-text {
+      font-size: 0.45rem;
+      letter-spacing: 0.15em;
+      color: rgba(201,168,76,0.7);
+      text-transform: uppercase;
+    }
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute;
+      bottom: 2.5rem;
+      left: max(5%, calc((100vw - 1160px) / 2));
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      z-index: 5;
+      animation: hintBounce 2s ease-in-out infinite;
+    }
+    @keyframes hintBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
+    .scroll-hint::before {
+      content: '';
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, rgba(201,168,76,0.6), transparent);
+    }
+
+    /* ─────────────────────────────────────────
+       MARQUEE STRIP
+    ───────────────────────────────────────── */
+    .marquee-strip {
+      background: var(--gold);
+      padding: 0.9rem 0;
+      overflow: hidden;
+    }
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marqueeScroll 28s linear infinite;
+    }
+    @keyframes marqueeScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 1.8rem;
+      padding: 0 1.8rem;
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--char-d);
+    }
+    .marquee-item svg { opacity: 0.6; }
+
+    /* ─────────────────────────────────────────
+       SOBRE
+    ───────────────────────────────────────── */
+    #sobre {
+      padding: 8rem 0;
+      background: var(--cream);
+    }
+    .sobre-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .sobre-visual {
+      position: relative;
+    }
+    .sobre-img-main {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: center top;
+    }
+    .sobre-img-accent {
+      position: absolute;
+      width: 48%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      bottom: -2.5rem;
+      right: -2.5rem;
+      border: 6px solid var(--cream);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    }
+    .sobre-gold-frame {
+      position: absolute;
+      top: -1.5rem;
+      left: -1.5rem;
+      width: 140px; height: 180px;
+      border: 1px solid rgba(201,168,76,0.35);
+      pointer-events: none;
+    }
+    .sobre-text {
+      padding-right: 2rem;
+    }
+    .sobre-quote {
+      font-family: var(--ff-serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--text-d);
+      margin: 1.5rem 0 2rem;
+    }
+    .sobre-quote em {
+      font-style: italic;
+      color: var(--gold-d);
+    }
+    .sobre-desc {
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: #5a5555;
+      margin-bottom: 1.2rem;
+    }
+    .sobre-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 3rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid rgba(201,168,76,0.2);
+    }
+    .stat-num {
+      font-family: var(--ff-serif);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #8a8585;
+      margin-top: 0.3rem;
+    }
+
+    /* ─────────────────────────────────────────
+       SERVIÇOS
+    ───────────────────────────────────────── */
+    #servicos {
+      padding: 8rem 0;
+      background: var(--char);
+    }
+    .servicos-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: end;
+      margin-bottom: 5rem;
+    }
+    .servicos-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2.2rem, 4vw, 3.8rem);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.1;
+    }
+    .servicos-title em { font-style: italic; color: var(--gold-l); }
+    .servicos-intro {
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.5);
+      align-self: end;
+    }
+    .servicos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(201,168,76,0.1);
+    }
+    .servico-card {
+      background: var(--char);
+      padding: 3rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.4s;
+      cursor: default;
+    }
+    .servico-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px; width: 0;
+      background: var(--gold);
+      transition: width 0.5s var(--ease-out);
+    }
+    .servico-card:hover { background: #3d3b3b; }
+    .servico-card:hover::after { width: 100%; }
+    .servico-num {
+      font-family: var(--ff-serif);
+      font-size: 4rem;
+      font-weight: 300;
+      color: rgba(201,168,76,0.12);
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      transition: color 0.4s;
+    }
+    .servico-card:hover .servico-num { color: rgba(201,168,76,0.22); }
+    .servico-icon {
+      width: 36px; height: 36px;
+      margin-bottom: 1.5rem;
+      color: var(--gold);
+    }
+    .servico-name {
+      font-family: var(--ff-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .servico-desc {
+      font-size: 0.8rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 1.5rem;
+    }
+    .servico-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .servico-list li {
+      font-size: 0.72rem;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.35);
+      padding-left: 1rem;
+      position: relative;
+    }
+    .servico-list li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--gold);
+    }
+
+    /* ─────────────────────────────────────────
+       GALERIA
+    ───────────────────────────────────────── */
+    #galeria {
+      padding: 8rem 0;
+      background: var(--off);
+    }
+    .galeria-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .galeria-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: var(--text-d);
+      margin-top: 1rem;
+      line-height: 1.15;
+    }
+    .galeria-title em { font-style: italic; color: var(--gold-d); }
+
+    /* Masonry-style grid */
+    .galeria-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 220px);
+      gap: 6px;
+    }
+    .galeria-item {
+      position: relative;
+      overflow: hidden;
+      background: var(--char);
+    }
+    .galeria-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 3; }
+    .galeria-item:nth-child(5) { grid-column: 3 / 5; grid-row: 2 / 4; }
+    .galeria-item:nth-child(8) { grid-column: 1 / 2; grid-row: 3 / 4; }
+
+    .galeria-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s var(--ease-out), filter 0.5s;
+      filter: brightness(0.88) saturate(0.9);
+    }
+    .galeria-item:hover img {
+      transform: scale(1.07);
+      filter: brightness(0.7) saturate(0.75);
+    }
+    .galeria-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(82,80,80,0.6) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .galeria-item:hover::after { opacity: 1; }
+    .galeria-item-label {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      z-index: 2;
+      font-family: var(--ff-serif);
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--white);
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .galeria-item:hover .galeria-item-label {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .galeria-cta {
+      text-align: center;
+      margin-top: 3.5rem;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.4);
+      padding: 1rem 2.5rem;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .btn-outline:hover {
+      background: var(--gold);
+      color: var(--char-d);
+      border-color: var(--gold);
+    }
+
+    /* ─────────────────────────────────────────
+       DIFERENCIAIS
+    ───────────────────────────────────────── */
+    #diferenciais {
+      padding: 8rem 0;
+      background: var(--cream);
+    }
+    .dif-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .dif-text .section-label { margin-bottom: 1.5rem; }
+    .dif-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: var(--text-d);
+      margin-bottom: 2.5rem;
+    }
+    .dif-title em { font-style: italic; color: var(--gold-d); }
+    .dif-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .dif-item {
+      display: grid;
+      grid-template-columns: 3rem 1fr;
+      gap: 1.5rem;
+      align-items: start;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      transition: background 0.3s;
+    }
+    .dif-item:first-child { border-top: 1px solid rgba(0,0,0,0.06); }
+    .dif-item-icon {
+      width: 3rem; height: 3rem;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--gold);
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .dif-item:hover .dif-item-icon {
+      background: rgba(201,168,76,0.15);
+      border-color: rgba(201,168,76,0.45);
+    }
+    .dif-item-name {
+      font-family: var(--ff-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-d);
+      margin-bottom: 0.3rem;
+    }
+    .dif-item-desc {
+      font-size: 0.8rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: #7a7575;
+    }
+    .dif-visual {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 200px 200px;
+      gap: 6px;
+    }
+    .dif-visual-img {
+      overflow: hidden;
+    }
+    .dif-visual-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease-out);
+    }
+    .dif-visual-img:hover img { transform: scale(1.06); }
+    .dif-visual-img:nth-child(2) {
+      grid-row: 1 / 3;
+    }
+    .dif-gold-tag {
+      position: absolute;
+      bottom: -2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--char-d);
+      font-size: 0.58rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 0.7rem 2rem;
+      white-space: nowrap;
+    }
+
+    /* ─────────────────────────────────────────
+       DEPOIMENTOS
+    ───────────────────────────────────────── */
+    #depoimentos {
+      padding: 8rem 0;
+      background: var(--char);
+    }
+    .dep-header {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+    .dep-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      color: var(--white);
+      margin-top: 1rem;
+    }
+    .dep-title em { font-style: italic; color: var(--gold-l); }
+    .dep-slider {
+      position: relative;
+      overflow: hidden;
+    }
+    .dep-track {
+      display: flex;
+      transition: transform 0.7s var(--ease-out);
+    }
+    .dep-card {
+      flex: 0 0 calc(100% / 3);
+      padding: 0 1.5rem;
+    }
+    .dep-card-inner {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(201,168,76,0.12);
+      padding: 2.5rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: relative;
+    }
+    .dep-card-inner::before {
+      content: '\201C';
+      font-family: var(--ff-serif);
+      font-size: 5rem;
+      color: rgba(201,168,76,0.15);
+      position: absolute;
+      top: 0.5rem;
+      left: 1.5rem;
+      line-height: 1;
+    }
+    .dep-stars {
+      display: flex;
+      gap: 4px;
+      color: var(--gold);
+      font-size: 0.7rem;
+    }
+    .dep-text {
+      font-family: var(--ff-serif);
+      font-size: 1.1rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.75);
+    }
+    .dep-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(201,168,76,0.12);
+    }
+    .dep-avatar {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--ff-serif);
+      font-size: 1rem;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .dep-name {
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--white);
+    }
+    .dep-role {
+      font-size: 0.65rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.1em;
+    }
+    .dep-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 3.5rem;
+    }
+    .dep-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(201,168,76,0.25);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .dep-dot.active {
+      background: var(--gold);
+      transform: scale(1.4);
+    }
+    .dep-arrow {
+      width: 44px; height: 44px;
+      border: 1px solid rgba(201,168,76,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+      cursor: pointer;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .dep-arrow:hover {
+      background: rgba(201,168,76,0.1);
+      border-color: rgba(201,168,76,0.5);
+    }
+
+    /* ─────────────────────────────────────────
+       AGENDAMENTO CTA
+    ───────────────────────────────────────── */
+    #agendar {
+      padding: 7rem 0;
+      background: var(--gold);
+      position: relative;
+      overflow: hidden;
+    }
+    #agendar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.08) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    .agendar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+    .agendar-label {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: rgba(61,59,59,0.65);
+      margin-bottom: 0.8rem;
+    }
+    .agendar-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      color: var(--char-d);
+      line-height: 1.1;
+    }
+    .agendar-title em { font-style: italic; }
+    .agendar-sub {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: rgba(61,59,59,0.7);
+      margin-top: 0.7rem;
+    }
+    .agendar-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .btn-dark {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--char-d);
+      padding: 1.1rem 2.5rem;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .btn-dark:hover {
+      background: var(--char);
+      transform: translateY(-2px);
+    }
+    .btn-insta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--char-d);
+      border: 1px solid rgba(61,59,59,0.35);
+      padding: 1.1rem 2rem;
+      transition: background 0.3s, color 0.3s;
+    }
+    .btn-insta:hover {
+      background: rgba(61,59,59,0.12);
+    }
+
+    /* ─────────────────────────────────────────
+       LOCALIZAÇÃO
+    ───────────────────────────────────────── */
+    #localizacao {
+      padding: 8rem 0;
+      background: var(--off);
+    }
+    .loc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .loc-title {
+      font-family: var(--ff-serif);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      color: var(--text-d);
+      line-height: 1.15;
+      margin: 1.2rem 0 2rem;
+    }
+    .loc-title em { font-style: italic; color: var(--gold-d); }
+    .loc-items {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+    .loc-item {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-start;
+    }
+    .loc-item-icon {
+      width: 40px; height: 40px;
+      flex-shrink: 0;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold);
+    }
+    .loc-item-label {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+    .loc-item-value {
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: #5a5555;
+      line-height: 1.6;
+    }
+    .loc-item-value strong {
+      font-weight: 400;
+      color: var(--text-d);
+    }
+    .loc-horarios {
+      background: var(--cream);
+      border: 1px solid rgba(201,168,76,0.15);
+      padding: 2rem;
+    }
+    .loc-horarios-title {
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .loc-horarios-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(201,168,76,0.2);
+    }
+    .loc-horario-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: #5a5555;
+    }
+    .loc-horario-row:last-child { border-bottom: none; }
+    .loc-horario-row .dia { font-weight: 400; color: var(--text-d); }
+    .loc-horario-row .hora { color: var(--gold-d); }
+    .loc-horario-row .fechado { color: #aaa; }
+    .loc-map {
+      width: 100%;
+      height: 100%;
+      min-height: 420px;
+      border: 0;
+      filter: grayscale(0.3) contrast(0.95);
+    }
+
+    /* ─────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────── */
+    #footer {
+      background: var(--char-d);
+      padding: 5rem 0 2.5rem;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 4rem;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .footer-brand-name {
+      font-family: var(--ff-sans);
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.3rem;
+    }
+    .footer-brand-sub {
+      font-family: var(--ff-serif);
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(201,168,76,0.5);
+      margin-bottom: 1.5rem;
+    }
+    .footer-tagline {
+      font-family: var(--ff-serif);
+      font-size: 0.9rem;
+      font-style: italic;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.7;
+      max-width: 240px;
+    }
+    .footer-social {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 2rem;
+    }
+    .footer-social a {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(201,168,76,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(201,168,76,0.6);
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .footer-social a:hover {
+      background: rgba(201,168,76,0.1);
+      color: var(--gold);
+      border-color: rgba(201,168,76,0.5);
+    }
+    .footer-col-title {
+      font-size: 0.58rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.8rem;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+    .footer-links a {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.4);
+      transition: color 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .footer-links a::before {
+      content: '';
+      display: block;
+      width: 0;
+      height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+    .footer-links a:hover { color: rgba(255,255,255,0.8); }
+    .footer-links a:hover::before { width: 14px; }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 2.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .footer-copy {
+      font-size: 0.68rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: 0.05em;
+    }
+    .footer-copy a { color: rgba(201,168,76,0.5); transition: color 0.3s; }
+    .footer-copy a:hover { color: var(--gold); }
+    .footer-legal {
+      display: flex;
+      gap: 2rem;
+    }
+    .footer-legal a {
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.2);
+      transition: color 0.3s;
+    }
+    .footer-legal a:hover { color: rgba(255,255,255,0.5); }
+
+    /* WhatsApp FAB */
+    .whatsapp-fab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 800;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: #25D366;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(37, 211, 102, 0.4);
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: fabPulse 3s ease-in-out infinite;
+    }
+    @keyframes fabPulse {
+      0%, 100% { box-shadow: 0 4px 24px rgba(37,211,102,0.4); }
+      50% { box-shadow: 0 4px 40px rgba(37,211,102,0.6), 0 0 0 8px rgba(37,211,102,0.08); }
+    }
+    .whatsapp-fab:hover {
+      transform: scale(1.1) translateY(-2px);
+      box-shadow: 0 8px 32px rgba(37,211,102,0.5);
+    }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .galeria-grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, 180px);
+      }
+      .galeria-item:nth-child(1) { grid-column: 1/3; grid-row: 1/3; }
+      .galeria-item:nth-child(5) { grid-column: 2/4; grid-row: 3/5; }
+      .galeria-item:nth-child(8) { grid-column: 1/2; grid-row: 4/5; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .burger { display: flex; }
+      #hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left {
+        padding: 8rem 5% 6rem;
+        text-align: center;
+        align-items: center;
+      }
+      .hero-eyebrow::before { display: none; }
+      .sobre-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .sobre-img-accent { right: 0; bottom: -2rem; }
+      .sobre-text { padding-right: 0; }
+      .servicos-header { grid-template-columns: 1fr; gap: 1.5rem; }
+      .servicos-grid { grid-template-columns: 1fr; }
+      .dif-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .dif-visual { order: -1; }
+      .loc-grid { grid-template-columns: 1fr; }
+      .agendar-inner { flex-direction: column; text-align: center; }
+      .agendar-actions { justify-content: center; }
+      .dep-card { flex: 0 0 100%; }
+      .footer-top { grid-template-columns: 1fr; gap: 2.5rem; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .footer-legal { justify-content: center; }
+    }
+
+    @media (max-width: 600px) {
+      .galeria-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(5, 150px);
+        grid-auto-rows: 150px;
+      }
+      .galeria-item:nth-child(1) { grid-column: 1/3; grid-row: 1/3; }
+      .galeria-item:nth-child(5) { grid-column: 1/3; grid-row: 4/6; }
+      .galeria-item:nth-child(8) { grid-column: 1/2; grid-row: 5; display: none; }
+      .sobre-stats { gap: 1.5rem; }
+      .hero-actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════════ -->
+<nav id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo" aria-label="Jasminny Amorim Concept Beauty">
+        <span class="nav-logo-name">Jasminny Amorim</span>
+        <span class="nav-logo-sub">Concept Beauty</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#sobre">Studio</a></li>
+        <li><a href="#servicos">Serviços</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#depoimentos">Clientes</a></li>
+        <li><a href="#localizacao">Localização</a></li>
+        <li><a href="https://wa.me/351000000000" target="_blank" rel="noopener" class="nav-cta">Agendar</a></li>
+      </ul>
+
+      <button class="burger" id="burgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Drawer -->
+<div class="nav-drawer" id="navDrawer">
+  <a href="#sobre" class="drawer-link">Studio</a>
+  <a href="#servicos" class="drawer-link">Serviços</a>
+  <a href="#galeria" class="drawer-link">Galeria</a>
+  <a href="#depoimentos" class="drawer-link">Clientes</a>
+  <a href="#localizacao" class="drawer-link">Localização</a>
+  <a href="https://wa.me/351000000000" target="_blank" rel="noopener" class="drawer-link" style="color:var(--gold)">Agendar</a>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     HERO
+════════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow reveal">Studio de Beleza · Braga, Portugal</div>
+
+    <h1 class="hero-title reveal" style="transition-delay:0.1s">
+      A arte de<br>
+      realçar a sua<br>
+      <em>beleza natural</em>
+    </h1>
+
+    <p class="hero-subtitle reveal" style="transition-delay:0.2s">Concept Beauty · Experiência Premium</p>
+
+    <div class="hero-actions reveal" style="transition-delay:0.3s">
+      <a href="https://wa.me/351000000000" target="_blank" rel="noopener" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2z"/></svg>
+        Agendar Consulta
+      </a>
+      <a href="#servicos" class="btn-ghost">
+        Ver Serviços
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-image-wrap">
+      <!-- Placeholder gradient — replace src with studio photo -->
+      <img
+        src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=85"
+        alt="Studio Jasminny Amorim — Ambiente de beleza sofisticado"
+        loading="eager"
+      />
+    </div>
+
+    <div class="hero-badge">
+      <div class="hero-badge-inner">
+        <div class="hero-badge-star">★ ★ ★</div>
+        <div class="hero-badge-number">5.0</div>
+        <div class="hero-badge-text">Google</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">Explorar</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     MARQUEE
+════════════════════════════════════════════ -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <!-- duplicated for seamless loop -->
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Manicure &amp; Pedicure
+    </span>
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Extensão de Cílios
+    </span>
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Design de Sobrancelhas
+    </span>
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Gel &amp; Shellac
+    </span>
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Depilação &amp; Skincare
+    </span>
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Concept Beauty · Braga
+    </span>
+    <!-- repeat -->
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Manicure &amp; Pedicure
+    </span>
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Extensão de Cílios
+    </span>
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Design de Sobrancelhas
+    </span>
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Gel &amp; Shellac
+    </span>
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Depilação &amp; Skincare
+    </span>
+    <span class="marquee-item">
+      <svg width="10" height="10" viewBox="0 0 10 10"><polygon points="5,0 6.2,3.8 10,3.8 6.9,6.2 8.1,10 5,7.6 1.9,10 3.1,6.2 0,3.8 3.8,3.8" fill="currentColor"/></svg>
+      Concept Beauty · Braga
+    </span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SOBRE
+════════════════════════════════════════════ -->
+<section id="sobre">
+  <div class="container">
+    <div class="sobre-grid">
+      <div class="sobre-visual reveal-left">
+        <div class="sobre-gold-frame"></div>
+        <img
+          class="sobre-img-main"
+          src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&q=85"
+          alt="Interior do Studio Jasminny Amorim"
+          loading="lazy"
+        />
+        <img
+          class="sobre-img-accent"
+          src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&q=80"
+          alt="Detalhe de tratamento de beleza"
+          loading="lazy"
+        />
+      </div>
+
+      <div class="sobre-text reveal-right">
+        <div class="section-label">Sobre o Studio</div>
+
+        <h2 class="sobre-quote">
+          Mais do que beleza,<br>
+          uma <em>experiência</em> que<br>
+          transforma.
+        </h2>
+
+        <p class="sobre-desc">
+          O Studio Jasminny Amorim nasceu do desejo de criar um espaço onde a beleza é tratada como arte. Aqui, cada tratamento é pensado ao detalhe, com técnicas modernas, produtos de alta performance e um atendimento verdadeiramente personalizado.
+        </p>
+        <p class="sobre-desc">
+          Localizado em Braga, o nosso studio é um refúgio de sofisticação — onde cada cliente é recebida com o cuidado e a atenção que merece. Porque a sua beleza é única, e o nosso trabalho é realçá-la.
+        </p>
+
+        <div class="sobre-stats">
+          <div>
+            <div class="stat-num">5+</div>
+            <div class="stat-label">Anos de experiência</div>
+          </div>
+          <div>
+            <div class="stat-num">500<span style="font-size:1.5rem">+</span></div>
+            <div class="stat-label">Clientes satisfeitas</div>
+          </div>
+          <div>
+            <div class="stat-num">5.0</div>
+            <div class="stat-label">Avaliação Google</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SERVIÇOS
+════════════════════════════════════════════ -->
+<section id="servicos">
+  <div class="container">
+    <div class="servicos-header">
+      <div class="reveal-left">
+        <div class="section-label" style="color:rgba(201,168,76,0.7)">O que oferecemos</div>
+        <h2 class="servicos-title">Serviços que <em>elevam</em><br>a sua beleza</h2>
+      </div>
+      <p class="servicos-intro reveal-right">
+        Cada serviço é realizado com técnica refinada, produtos premium e uma atenção singular ao detalhe. Da preparação ao acabamento, a excelência está em cada passo.
+      </p>
+    </div>
+
+    <div class="servicos-grid">
+      <!-- Card 1 -->
+      <div class="servico-card reveal" style="transition-delay:0s">
+        <div class="servico-num">01</div>
+        <svg class="servico-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9" stroke-width="2" stroke-linecap="round"/>
+          <line x1="15" y1="9" x2="15.01" y2="9" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <div class="servico-name">Unhas & Mãos</div>
+        <p class="servico-desc">Arte e cuidado para as suas mãos, com técnicas que garantem durabilidade e elegância.</p>
+        <ul class="servico-list">
+          <li>Manicure de gel / shellac</li>
+          <li>Nail art personalizada</li>
+          <li>Extensão de unhas</li>
+          <li>Tratamento cuticular</li>
+        </ul>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="servico-card reveal" style="transition-delay:0.1s">
+        <div class="servico-num">02</div>
+        <svg class="servico-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <ellipse cx="12" cy="5" rx="9" ry="3"/>
+          <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+          <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+        </svg>
+        <div class="servico-name">Pedicure</div>
+        <p class="servico-desc">Um tratamento completo para pés impecáveis, desde o cuidado da pele ao acabamento perfeito.</p>
+        <ul class="servico-list">
+          <li>Pedicure hidratante</li>
+          <li>Esfoliação profunda</li>
+          <li>Aplicação de verniz gel</li>
+          <li>Tratamento de calosidades</li>
+        </ul>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="servico-card reveal" style="transition-delay:0.2s">
+        <div class="servico-num">03</div>
+        <svg class="servico-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <div class="servico-name">Extensão de Cílios</div>
+        <p class="servico-desc">Olhos mais expressivos e sedutores, com técnicas que respeitam a saúde dos seus cílios naturais.</p>
+        <ul class="servico-list">
+          <li>Volume russo</li>
+          <li>Efeito natural / fox eye</li>
+          <li>Lifting de cílios</li>
+          <li>Manutenção e remoção</li>
+        </ul>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="servico-card reveal" style="transition-delay:0.1s">
+        <div class="servico-num">04</div>
+        <svg class="servico-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+          <line x1="4" y1="22" x2="4" y2="15"/>
+        </svg>
+        <div class="servico-name">Sobrancelhas</div>
+        <p class="servico-desc">Design personalizado que realça a sua expressão e harmoniza o seu rosto de forma natural.</p>
+        <ul class="servico-list">
+          <li>Design e mapeamento</li>
+          <li>Henna &amp; tintura</li>
+          <li>Brow lamination</li>
+          <li>Depilação com linha</li>
+        </ul>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="servico-card reveal" style="transition-delay:0.2s">
+        <div class="servico-num">05</div>
+        <svg class="servico-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+        </svg>
+        <div class="servico-name">Skincare & Facial</div>
+        <p class="servico-desc">Tratamentos que nutrem, renovam e iluminam a pele, revelando a sua melhor versão.</p>
+        <ul class="servico-list">
+          <li>Limpeza de pele profunda</li>
+          <li>Hidratação intensiva</li>
+          <li>Máscara facial premium</li>
+          <li>Peeling suave</li>
+        </ul>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="servico-card reveal" style="transition-delay:0.3s">
+        <div class="servico-num">06</div>
+        <svg class="servico-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+        <div class="servico-name">Depilação</div>
+        <p class="servico-desc">Técnicas eficazes e suaves para uma pele lisa e confortável, com resultados duradouros.</p>
+        <ul class="servico-list">
+          <li>Depilação a cera</li>
+          <li>Cera quente e fria</li>
+          <li>Linha facial</li>
+          <li>Tratamento pós-depilação</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     GALERIA
+════════════════════════════════════════════ -->
+<section id="galeria">
+  <div class="container">
+    <div class="galeria-header reveal">
+      <div class="section-label centered">Galeria</div>
+      <h2 class="galeria-title">Cada detalhe é<br><em>uma obra de arte</em></h2>
+    </div>
+
+    <div class="galeria-grid">
+      <div class="galeria-item reveal" style="transition-delay:0s">
+        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800&q=80" alt="Manicure" loading="lazy"/>
+        <div class="galeria-item-label">Nail Art</div>
+      </div>
+      <div class="galeria-item reveal" style="transition-delay:0.05s">
+        <img src="https://images.unsplash.com/photo-1632345031435-8727f592d8d9?w=400&q=80" alt="Cílios" loading="lazy"/>
+        <div class="galeria-item-label">Extensão de Cílios</div>
+      </div>
+      <div class="galeria-item reveal" style="transition-delay:0.1s">
+        <img src="https://images.unsplash.com/photo-1581182800629-7d90925ad072?w=400&q=80" alt="Sobrancelhas" loading="lazy"/>
+        <div class="galeria-item-label">Sobrancelhas</div>
+      </div>
+      <div class="galeria-item reveal" style="transition-delay:0.15s">
+        <img src="https://images.unsplash.com/photo-1519415510236-718bdfcd89c8?w=400&q=80" alt="Pedicure" loading="lazy"/>
+        <div class="galeria-item-label">Pedicure</div>
+      </div>
+      <div class="galeria-item reveal" style="transition-delay:0.2s">
+        <img src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=800&q=80" alt="Facial" loading="lazy"/>
+        <div class="galeria-item-label">Skincare Facial</div>
+      </div>
+      <div class="galeria-item reveal" style="transition-delay:0.1s">
+        <img src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=400&q=80" alt="Studio" loading="lazy"/>
+        <div class="galeria-item-label">Studio</div>
+      </div>
+      <div class="galeria-item reveal" style="transition-delay:0.15s">
+        <img src="https://images.unsplash.com/photo-1583241800698-e8ab01830a24?w=400&q=80" alt="Resultado" loading="lazy"/>
+        <div class="galeria-item-label">Resultado</div>
+      </div>
+      <div class="galeria-item reveal" style="transition-delay:0.2s">
+        <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=400&q=80" alt="Beleza" loading="lazy"/>
+        <div class="galeria-item-label">Experiência</div>
+      </div>
+    </div>
+
+    <div class="galeria-cta reveal">
+      <a href="https://www.instagram.com/jasminnyamorim_/" target="_blank" rel="noopener" class="btn-outline">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        Ver mais no Instagram
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     DIFERENCIAIS
+════════════════════════════════════════════ -->
+<section id="diferenciais">
+  <div class="container">
+    <div class="dif-grid">
+      <div class="dif-text reveal-left">
+        <div class="section-label">Porquê escolher-nos</div>
+        <h2 class="dif-title">
+          Uma experiência<br>
+          verdadeiramente <em>única</em>
+        </h2>
+
+        <div class="dif-items">
+          <div class="dif-item">
+            <div class="dif-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <div class="dif-item-name">Produtos de Alta Performance</div>
+              <p class="dif-item-desc">Trabalhamos exclusivamente com marcas de referência internacional, garantindo resultados superiores e duradouros.</p>
+            </div>
+          </div>
+
+          <div class="dif-item">
+            <div class="dif-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="dif-item-name">Atendimento Personalizado</div>
+              <p class="dif-item-desc">Cada cliente é única. Adaptamos cada tratamento ao seu perfil, estilo e necessidades específicas.</p>
+            </div>
+          </div>
+
+          <div class="dif-item">
+            <div class="dif-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="dif-item-name">Pontualidade e Eficiência</div>
+              <p class="dif-item-desc">Respeitamos o seu tempo. As consultas começam à hora marcada, sem esperas desnecessárias.</p>
+            </div>
+          </div>
+
+          <div class="dif-item">
+            <div class="dif-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div>
+              <div class="dif-item-name">Ambiente Exclusivo</div>
+              <p class="dif-item-desc">Um espaço pensado para o seu conforto e bem-estar, onde cada visita é um momento de prazer.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dif-visual reveal-right">
+        <div class="dif-visual-img">
+          <img src="https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=400&q=80" alt="Studio interior" loading="lazy"/>
+        </div>
+        <div class="dif-visual-img">
+          <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80" alt="Studio ambiente" loading="lazy"/>
+        </div>
+        <div class="dif-visual-img">
+          <img src="https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=400&q=80" alt="Tratamento" loading="lazy"/>
+        </div>
+        <div class="dif-gold-tag">Studio Jasminny Amorim · Braga</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     DEPOIMENTOS
+════════════════════════════════════════════ -->
+<section id="depoimentos">
+  <div class="container">
+    <div class="dep-header reveal">
+      <div class="section-label centered" style="color:rgba(201,168,76,0.7)">Clientes</div>
+      <h2 class="dep-title">O que dizem as nossas<br><em>clientes</em></h2>
+    </div>
+
+    <div class="dep-slider reveal">
+      <div class="dep-track" id="depTrack">
+        <div class="dep-card">
+          <div class="dep-card-inner">
+            <div class="dep-stars">★★★★★</div>
+            <p class="dep-text">"Simplesmente maravilhosa! O atendimento é impecável, o espaço é lindo e o resultado ficou ainda melhor do que eu esperava. Definitivamente o meu studio de referência em Braga."</p>
+            <div class="dep-author">
+              <div class="dep-avatar">A</div>
+              <div>
+                <div class="dep-name">Ana Sofia M.</div>
+                <div class="dep-role">Cliente · Google Review</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dep-card">
+          <div class="dep-card-inner">
+            <div class="dep-stars">★★★★★</div>
+            <p class="dep-text">"A Jasminny tem um talento incrível! As minhas unhas ficaram perfeitas e os cílios então… nunca me senti tão bonita. O espaço é sofisticado e acolhedor ao mesmo tempo."</p>
+            <div class="dep-author">
+              <div class="dep-avatar">M</div>
+              <div>
+                <div class="dep-name">Mariana F.</div>
+                <div class="dep-role">Cliente · Google Review</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dep-card">
+          <div class="dep-card-inner">
+            <div class="dep-stars">★★★★★</div>
+            <p class="dep-text">"Fiz o design de sobrancelhas e ficou absolutamente perfeito. A profissionalismo é notável em cada detalhe. Recomendo a todas as minhas amigas sem hesitar."</p>
+            <div class="dep-author">
+              <div class="dep-avatar">C</div>
+              <div>
+                <div class="dep-name">Catarina R.</div>
+                <div class="dep-role">Cliente · Google Review</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dep-card">
+          <div class="dep-card-inner">
+            <div class="dep-stars">★★★★★</div>
+            <p class="dep-text">"Já sou cliente há mais de 2 anos e nunca fiquei desapontada. A qualidade dos produtos, a técnica e o carinho no atendimento fazem toda a diferença. É o melhor studio que já conheci."</p>
+            <div class="dep-author">
+              <div class="dep-avatar">I</div>
+              <div>
+                <div class="dep-name">Inês P.</div>
+                <div class="dep-role">Cliente Fiel · Google Review</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dep-card">
+          <div class="dep-card-inner">
+            <div class="dep-stars">★★★★★</div>
+            <p class="dep-text">"Tratamento facial espetacular! A minha pele nunca esteve tão hidratada e luminosa. A Jasminny explicou tudo com muita atenção e os produtos utilizados são de excelente qualidade."</p>
+            <div class="dep-author">
+              <div class="dep-avatar">T</div>
+              <div>
+                <div class="dep-name">Teresa V.</div>
+                <div class="dep-role">Cliente · Google Review</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dep-controls">
+      <button class="dep-arrow" id="depPrev" aria-label="Anterior">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="dep-dot active" data-idx="0"></div>
+      <div class="dep-dot" data-idx="1"></div>
+      <div class="dep-dot" data-idx="2"></div>
+      <button class="dep-arrow" id="depNext" aria-label="Próximo">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     AGENDAMENTO CTA
+════════════════════════════════════════════ -->
+<section id="agendar">
+  <div class="container">
+    <div class="agendar-inner">
+      <div class="reveal-left">
+        <div class="agendar-label">Reserve o seu momento</div>
+        <h2 class="agendar-title">
+          Pronta para se<br>
+          <em>transformar?</em>
+        </h2>
+        <p class="agendar-sub">Entre em contacto e marque a sua consulta. Estamos à espera de si.</p>
+      </div>
+      <div class="agendar-actions reveal-right">
+        <a href="https://wa.me/351000000000" target="_blank" rel="noopener" class="btn-dark">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Agendar via WhatsApp
+        </a>
+        <a href="https://www.instagram.com/jasminnyamorim_/" target="_blank" rel="noopener" class="btn-insta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          Instagram
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     LOCALIZAÇÃO
+════════════════════════════════════════════ -->
+<section id="localizacao">
+  <div class="container">
+    <div class="loc-grid">
+      <div class="reveal-left">
+        <div class="section-label">Encontre-nos</div>
+        <h2 class="loc-title">
+          Visite o nosso<br>
+          <em>Studio</em> em Braga
+        </h2>
+
+        <div class="loc-items">
+          <div class="loc-item">
+            <div class="loc-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="loc-item-label">Morada</div>
+              <div class="loc-item-value">
+                <strong>Studio Jasminny Amorim</strong><br>
+                Braga, Portugal
+              </div>
+            </div>
+          </div>
+
+          <div class="loc-item">
+            <div class="loc-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.18 6.18l1.27-.84a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="loc-item-label">WhatsApp</div>
+              <div class="loc-item-value">
+                <a href="https://wa.me/351000000000" target="_blank" rel="noopener" style="color:var(--gold-d); text-decoration:underline; text-underline-offset:3px">
+                  Contactar via WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="loc-item">
+            <div class="loc-item-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+            </div>
+            <div>
+              <div class="loc-item-label">Instagram</div>
+              <div class="loc-item-value">
+                <a href="https://www.instagram.com/jasminnyamorim_/" target="_blank" rel="noopener" style="color:var(--gold-d); text-decoration:underline; text-underline-offset:3px">
+                  @jasminnyamorim_
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="loc-horarios">
+          <div class="loc-horarios-title">Horário de Funcionamento</div>
+          <div class="loc-horario-row">
+            <span class="dia">Segunda-feira</span>
+            <span class="hora">09h00 – 19h00</span>
+          </div>
+          <div class="loc-horario-row">
+            <span class="dia">Terça-feira</span>
+            <span class="hora">09h00 – 19h00</span>
+          </div>
+          <div class="loc-horario-row">
+            <span class="dia">Quarta-feira</span>
+            <span class="hora">09h00 – 19h00</span>
+          </div>
+          <div class="loc-horario-row">
+            <span class="dia">Quinta-feira</span>
+            <span class="hora">09h00 – 19h00</span>
+          </div>
+          <div class="loc-horario-row">
+            <span class="dia">Sexta-feira</span>
+            <span class="hora">09h00 – 19h00</span>
+          </div>
+          <div class="loc-horario-row">
+            <span class="dia">Sábado</span>
+            <span class="hora">09h00 – 14h00</span>
+          </div>
+          <div class="loc-horario-row">
+            <span class="dia">Domingo</span>
+            <span class="fechado">Fechado</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal-right" style="min-height:420px">
+        <iframe
+          class="loc-map"
+          title="Localização Studio Jasminny Amorim"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3570.8161392798947!2d-8.4169642!3d41.5528485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd24ffe06d205b8f%3A0x1a35a2ef8940883f!2sStudio+Jasminny+Amorim!5e0!3m2!1spt-PT!2spt!4v1700000000000"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">Jasminny Amorim</div>
+        <div class="footer-brand-sub">Concept Beauty</div>
+        <p class="footer-tagline">"A beleza é uma forma de arte. Nós somos os artistas."</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/jasminnyamorim_/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://wa.me/351000000000" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+          <a href="https://www.google.com/maps/place/Studio+Jasminny+Amorim/@41.5528485,-8.4169642" target="_blank" rel="noopener" aria-label="Google Maps">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Serviços</div>
+        <ul class="footer-links">
+          <li><a href="#servicos">Manicure & Pedicure</a></li>
+          <li><a href="#servicos">Extensão de Cílios</a></li>
+          <li><a href="#servicos">Design de Sobrancelhas</a></li>
+          <li><a href="#servicos">Skincare Facial</a></li>
+          <li><a href="#servicos">Depilação</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Studio</div>
+        <ul class="footer-links">
+          <li><a href="#sobre">Sobre Nós</a></li>
+          <li><a href="#galeria">Galeria</a></li>
+          <li><a href="#depoimentos">Depoimentos</a></li>
+          <li><a href="#localizacao">Localização</a></li>
+          <li><a href="https://www.instagram.com/jasminnyamorim_/" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Contacto</div>
+        <ul class="footer-links">
+          <li><a href="https://wa.me/351000000000" target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="#agendar">Agendar Consulta</a></li>
+          <li><a href="https://www.google.com/maps/place/Studio+Jasminny+Amorim" target="_blank" rel="noopener">Google Maps</a></li>
+        </ul>
+
+        <div style="margin-top:2rem">
+          <div class="footer-col-title">Avaliação</div>
+          <div style="display:flex;align-items:center;gap:0.6rem;margin-top:0.5rem">
+            <div style="color:var(--gold);font-size:0.8rem">★★★★★</div>
+            <div style="font-size:0.72rem;color:rgba(255,255,255,0.4)">5.0 no Google</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copy">
+        &copy; 2025 Studio Jasminny Amorim · Concept Beauty · Braga, Portugal
+      </p>
+      <div class="footer-legal">
+        <a href="#">Política de Privacidade</a>
+        <a href="#">Termos de Uso</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════
+     WHATSAPP FAB
+════════════════════════════════════════════ -->
+<a
+  href="https://wa.me/351000000000"
+  target="_blank"
+  rel="noopener"
+  class="whatsapp-fab"
+  aria-label="Contactar via WhatsApp"
+>
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+
+<!-- ═══════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════ -->
+<script>
+  /* ── Nav scroll ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  }, { passive: true });
+
+  /* ── Burger menu ── */
+  const burger = document.getElementById('burgerBtn');
+  const drawer = document.getElementById('navDrawer');
+  let drawerOpen = false;
+
+  function toggleDrawer(state) {
+    drawerOpen = state;
+    drawer.style.display = state ? 'flex' : 'none';
+    requestAnimationFrame(() => drawer.classList.toggle('open', state));
+    burger.classList.toggle('open', state);
+    document.body.style.overflow = state ? 'hidden' : '';
+  }
+
+  burger.addEventListener('click', () => toggleDrawer(!drawerOpen));
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleDrawer(false)));
+
+  /* ── Scroll reveal ── */
+  const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+  );
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  /* ── Testimonials slider ── */
+  const track = document.getElementById('depTrack');
+  const dots = document.querySelectorAll('.dep-dot');
+  let currentSlide = 0;
+  let slidesPerView = 3;
+  const totalCards = track.querySelectorAll('.dep-card').length;
+
+  function getSlidesPerView() {
+    if (window.innerWidth < 900) return 1;
+    return 3;
+  }
+
+  function maxSlide() {
+    return Math.max(0, totalCards - getSlidesPerView());
+  }
+
+  function goTo(idx) {
+    slidesPerView = getSlidesPerView();
+    currentSlide = Math.max(0, Math.min(idx, maxSlide()));
+    const pct = (100 / slidesPerView) * currentSlide;
+    track.style.transform = `translateX(-${pct}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === Math.min(currentSlide, dots.length - 1)));
+  }
+
+  document.getElementById('depNext').addEventListener('click', () => goTo(currentSlide + 1));
+  document.getElementById('depPrev').addEventListener('click', () => goTo(currentSlide - 1));
+  dots.forEach(d => d.addEventListener('click', () => goTo(+d.dataset.idx)));
+  window.addEventListener('resize', () => goTo(currentSlide));
+
+  /* Auto-play */
+  let autoPlay = setInterval(() => goTo((currentSlide + 1) % (maxSlide() + 1)), 5000);
+  track.parentElement.addEventListener('mouseenter', () => clearInterval(autoPlay));
+  track.parentElement.addEventListener('mouseleave', () => {
+    autoPlay = setInterval(() => goTo((currentSlide + 1) % (maxSlide() + 1)), 5000);
+  });
+
+  /* ── Hero fade on load ── */
+  window.addEventListener('load', () => {
+    document.querySelectorAll('#hero .reveal, #hero .hero-eyebrow').forEach(el => {
+      el.classList.add('visible');
+    });
+  });
+</script>
+
+</body>
+</html>
